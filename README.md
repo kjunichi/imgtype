@@ -1,8 +1,9 @@
+![snapshot](snap.png)
+
 # How to use
 
-wget https://blog.golang.org/gopher/prototype.jpg
-
+```shell-session
 go get github.com/nfnt/resize
 go get github.com/nsf/termbox-go
-go run main.go prototype.jpg
-
+go run main.go some.jpg
+```
