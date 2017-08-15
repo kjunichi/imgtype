@@ -8,12 +8,7 @@ import (
 	"github.com/nfnt/resize"
 	termbox "github.com/nsf/termbox-go"
 )
-
-func main() {
-	imagePath := "test.jpg"
-	if len(os.Args) == 2 {
-		imagePath = os.Args[1]
-	}
+func imgtype(imagePath string) {
 	file, err := os.Open(imagePath)
 	if err != nil {
 		log.Fatal(err)
@@ -295,10 +290,7 @@ func main() {
 			switch ev.Key {
 			case termbox.KeyEsc:
 				//Escキー押した時の処理
-				print(w)
-				print(",")
-				println(h)
-				os.Exit(0)
+				return
 			case termbox.KeyArrowUp:
 				//上キー押した時の処理
 			case termbox.KeyArrowDown:
@@ -308,4 +300,12 @@ func main() {
 		default:
 		}
 	}
+
+}
+func main() {
+	imagePath := "test.jpg"
+	if len(os.Args) == 2 {
+		imagePath = os.Args[1]
+	}
+	imgtype(imagePath)
 }
