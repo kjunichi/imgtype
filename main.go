@@ -188,16 +188,46 @@ func main() {
 				// blue
 				cidx = 5
 			}
+			if r == 2 && g == 1 && b == 0 {
+				chi = 11
+				// yellow
+				cidx = 4
+				cbidx = 2
+			}
 			if r == 1 && g == 1 && b == 0 {
 				chi = 11
 				// yellow
 				cidx = 1
 				cbidx = 4
 			}
-			if r == 1 && g == 0 && b == 0 {
+			if r == 3 && g == 3 && b == 2 {
+				chi = 11
+				// yellow
+				cidx = 8
+				cbidx = 4
+			}
+			if r == 1 && g == 0 && b == 1 {
 				chi = 11
 				// magenta
 				cidx = 1
+				cbidx = 6
+			}
+			if r == 2 && g == 0 && b == 1 {
+				chi = 11
+				// magenta
+				cidx = 6
+				cbidx = 2
+			}
+			if r == 1 && g == 0 && b == 2 {
+				chi = 11
+				// magenta
+				cidx = 6
+				cbidx = 5
+			}
+			if r == 3 && g == 2 && b == 3 {
+				chi = 11
+				// magenta
+				cidx = 8
 				cbidx = 6
 			}
 			if r == 0 && g == 1 && b == 1 {
@@ -206,12 +236,35 @@ func main() {
 				cidx = 1
 				cbidx = 7
 			}
-
+			if r == 0 && g == 2 && b == 1 {
+				chi = 11
+				// cyan
+				cidx = 7
+				cbidx = 3
+			}
+			if r == 0 && g == 1 && b == 2 {
+				chi = 11
+				// cyan
+				cidx = 7
+				cbidx = 5
+			}
+			if r == 2 && g == 3 && b == 3 {
+				chi = 11
+				// cyan
+				cidx = 8
+				cbidx = 7
+			}
 			if r == 1 && g == 1 && b == 1 {
 				chi = 11
 				// white
 				cidx = 1
 				cbidx = 8
+			}
+			if r == 2 && g == 2 && b == 2 {
+				chi = 11
+				// white
+				cidx = 8
+				cbidx = 8 + 512
 			}
 			if r == 1 && g == 0 && b == 0 {
 				chi = 11
