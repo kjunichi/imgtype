@@ -1,25 +1,80 @@
 package main
 
 import (
+	"image"
 	"image/jpeg"
+	"image/png"
+	"io"
 	"log"
+	"net/http"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/nfnt/resize"
 	termbox "github.com/nsf/termbox-go"
 )
-func imgtype(imagePath string) {
-	file, err := os.Open(imagePath)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	img, err := jpeg.Decode(file)
-	if err != nil {
-		log.Fatal(err)
+func isPng(name string) bool {
+	r := regexp.MustCompile(`.png$`)
+	if r.MatchString(name) {
+		return true
 	}
-	defer file.Close()
+	return false
+}
+func getTypeFromPath(path string) string {
+	if isPng(path) {
+		return "png"
+	}
+	return "jpeg"
+}
 
+func getStream(imagePath string) {
+	var reader io.Reader
+	var imageType string
+
+	r := regexp.MustCompile(`^https?://`)
+	if r.MatchString(imagePath) {
+		response, err := http.Get(imagePath)
+		if err != nil {
+			panic(err)
+		}
+		reader = response.Body
+		defer response.Body.Close()
+		mtype := response.Header.Get("Content-Type")
+		if strings.Contains(mtype, "png") {
+			imageType = "png"
+		} else {
+			imageType = "jpeg"
+		}
+	} else {
+		imageType = getTypeFromPath(imagePath)
+		file, err := os.Open(imagePath)
+		if err != nil {
+			log.Fatal(err)
+		}
+		reader = file
+		defer file.Close()
+	}
+	imgtype(reader, imageType)
+}
+
+func imgtype(reader io.Reader, imageType string) {
+
+	var img image.Image
+	var err error
+
+	if strings.Contains(imageType, "jpeg") {
+		img, err = jpeg.Decode(reader)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		img, err = png.Decode(reader)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
 	err = termbox.Init()
 	if err != nil {
 		panic(err)
@@ -307,5 +362,5 @@ func main() {
 	if len(os.Args) == 2 {
 		imagePath = os.Args[1]
 	}
-	imgtype(imagePath)
+	getStream(imagePath)
 }
