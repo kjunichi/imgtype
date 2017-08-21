@@ -1,0 +1,7 @@
+language: go
+
+script:
+ - go test -v
+install:
+  - go get github.com/nfnt/resize
+  - go get github.com/nsf/termbox-go
