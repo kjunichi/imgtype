@@ -1,5 +1,7 @@
 ![snapshot](snap.png)
 
+[![Build Status](https://travis-ci.org/kjunichi/imgtype.svg?branch=master)](https://travis-ci.org/kjunichi/imgtype)
+
 # How to use
 
 ```shell-session
