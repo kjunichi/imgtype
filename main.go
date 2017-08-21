@@ -196,6 +196,10 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		cidx = 8
 		chi = 11
 	}
+	if r == 3 && g < 1 && b < 1 {
+		// red
+		cidx = 2 + 512
+	}
 	if r < 2 && g == 3 && b < 2 {
 		// green
 		cidx = 3
