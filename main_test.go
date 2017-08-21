@@ -510,7 +510,7 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 6 {
+	if cidx != 6+512 {
 		t.Errorf("expecting 6,got %d", cidx)
 	}
 	if cbidx != 0 {

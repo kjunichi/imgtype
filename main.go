@@ -304,6 +304,9 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		cidx = 1
 		cbidx = 5
 	}
+	if r == 3 && g == 0 && b == 3 {
+		cidx = 6 + 512
+	}
 	return
 }
 
