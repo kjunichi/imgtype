@@ -81,8 +81,8 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 11 {
 		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
 	if cbidx != 3 {
 		t.Errorf("expecting 3,got %d", cbidx)
@@ -92,61 +92,61 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 
 	chi, cidx, cbidx = getCellInfo(0, 2, 3)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 5+512 {
+		t.Errorf("expecting 517,got %d", cbidx)
 	}
 
 	chi, cidx, cbidx = getCellInfo(0, 3, 0)
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 3 {
-		t.Errorf("expecting 3,got %d", cidx)
+	if cidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 
 	chi, cidx, cbidx = getCellInfo(0, 3, 1)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
-	}
-	if cidx != 3 {
-		t.Errorf("expecting 3,got %d", cidx)
-	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
-	}
-	chi, cidx, cbidx = getCellInfo(0, 3, 2)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
 	if cidx != 7 {
 		t.Errorf("expecting 7,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cbidx)
+	}
+	chi, cidx, cbidx = getCellInfo(0, 3, 2)
+	if chi != 11 {
+		t.Errorf("expecting 10,got %d", chi)
+	}
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
+	}
+	if cbidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(0, 3, 3)
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
@@ -183,14 +183,14 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 5,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 0, 3)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 0 {
-		t.Errorf("expecting 0,got %d", cidx)
+	if cidx != 6 {
+		t.Errorf("expecting 6,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 5+512 {
+		t.Errorf("expecting 517,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 1, 0)
 	if chi != 11 {
@@ -223,34 +223,34 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 1, 3)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 5 {
-		t.Errorf("expecting 5,got %d", cidx)
+	if cidx != 5+512 {
+		t.Errorf("expecting 517,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 8 {
+		t.Errorf("expecting 8,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 2, 0)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 0 {
-		t.Errorf("expecting 0,got %d", cidx)
+	if cidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 4 {
+		t.Errorf("expecting 4,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 2, 1)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 8 {
-		t.Errorf("expecting 8,got %d", cidx)
+	if cidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 8 {
+		t.Errorf("expecting 8,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 2, 2)
 	if chi != 10 {
@@ -263,55 +263,55 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 2, 3)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 8+512 {
+		t.Errorf("expecting 520,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 3, 0)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 3 {
-		t.Errorf("expecting 3,got %d", cidx)
+	if cidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cbidx)
 	}
 
 	chi, cidx, cbidx = getCellInfo(1, 3, 1)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 3 {
-		t.Errorf("expecting 3,got %d", cidx)
+	if cidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 8 {
+		t.Errorf("expecting 8,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 3, 2)
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(1, 3, 3)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 7 {
-		t.Errorf("expecting 7,got %d", cidx)
+	if cidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 8+512 {
+		t.Errorf("expecting 520,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 0, 0)
 	if chi != 10 {
@@ -335,14 +335,14 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 2,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 0, 2)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 11,got %d", chi)
 	}
 	if cidx != 6 {
 		t.Errorf("expecting 6,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 6+512 {
+		t.Errorf("expecting 518,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 0, 3)
 	if chi != 10 {
@@ -396,24 +396,24 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 2, 0)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
 	if cidx != 4 {
 		t.Errorf("expecting 4,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 2, 1)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
 	if cidx != 8 {
 		t.Errorf("expecting 8,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 2, 2)
 	if chi != 11 {
@@ -436,25 +436,25 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 3, 0)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 4 {
-		t.Errorf("expecting 4,got %d", cidx)
+	if cidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 3+512 {
+		t.Errorf("expecting 515,got %d", cbidx)
 	}
 
 	chi, cidx, cbidx = getCellInfo(2, 3, 1)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 4 {
-		t.Errorf("expecting 4,got %d", cidx)
+	if cidx != 8+512 {
+		t.Errorf("expecting 520,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 6+512 {
+		t.Errorf("expecting 518,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(2, 3, 2)
 	if chi != 10 {
@@ -470,11 +470,11 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 11 {
 		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 8 {
-		t.Errorf("expecting 8,got %d", cidx)
+	if cidx != 8+512 {
+		t.Errorf("expecting 520,got %d", cidx)
 	}
-	if cbidx != 7 {
-		t.Errorf("expecting 7,got %d", cbidx)
+	if cbidx != 7+512 {
+		t.Errorf("expecting 519,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 0, 0)
 	if chi != 10 {
@@ -497,14 +497,14 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 0, 2)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 6 {
-		t.Errorf("expecting 6,got %d", cidx)
+	if cidx != 6+512 {
+		t.Errorf("expecting 518,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 2+512 {
+		t.Errorf("expecting 514,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 0, 3)
 	if chi != 10 {
@@ -558,24 +558,24 @@ func TestGetCellInfo(t *testing.T) {
 		t.Errorf("expecting 0,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 2, 0)
-	if chi != 10 {
-		t.Errorf("expecting 10,got %d", chi)
+	if chi != 11 {
+		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 4 {
+	if cidx != 4+512 {
 		t.Errorf("expecting 4,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 2+512 {
+		t.Errorf("expecting 514,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 2, 1)
-	if chi != 10 {
+	if chi != 11 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 4 {
-		t.Errorf("expecting 4,got %d", cidx)
+	if cidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cidx)
 	}
-	if cbidx != 0 {
-		t.Errorf("expecting 0,got %d", cbidx)
+	if cbidx != 2+512 {
+		t.Errorf("expecting 514,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 2, 2)
 	if chi != 10 {
@@ -594,15 +594,15 @@ func TestGetCellInfo(t *testing.T) {
 	if cidx != 8 {
 		t.Errorf("expecting 8,got %d", cidx)
 	}
-	if cbidx != 6 {
-		t.Errorf("expecting 6,got %d", cbidx)
+	if cbidx != 6+512 {
+		t.Errorf("expecting 518,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 3, 0)
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 4 {
-		t.Errorf("expecting 4,got %d", cidx)
+	if cidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
@@ -612,8 +612,8 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 10 {
 		t.Errorf("expecting 10,got %d", chi)
 	}
-	if cidx != 4 {
-		t.Errorf("expecting 4,got %d", cidx)
+	if cidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cidx)
 	}
 	if cbidx != 0 {
 		t.Errorf("expecting 0,got %d", cbidx)
@@ -622,11 +622,11 @@ func TestGetCellInfo(t *testing.T) {
 	if chi != 11 {
 		t.Errorf("expecting 11,got %d", chi)
 	}
-	if cidx != 8 {
-		t.Errorf("expecting 0,got %d", cidx)
+	if cidx != 8+512 {
+		t.Errorf("expecting 520,got %d", cidx)
 	}
-	if cbidx != 4 {
-		t.Errorf("expecting 4,got %d", cbidx)
+	if cbidx != 4+512 {
+		t.Errorf("expecting 516,got %d", cbidx)
 	}
 	chi, cidx, cbidx = getCellInfo(3, 3, 3)
 	if chi != 10 {

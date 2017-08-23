@@ -105,6 +105,11 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 					if b > g && r >= b {
 						// magenta
 						cidx = 6
+						if r+g > 4 && g == 0 {
+							chi = 11
+							cbidx = 6 + 512
+							cidx = 8
+						}
 					} else {
 						if r >= g && g > 2 {
 							// yellow
@@ -121,6 +126,11 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 					if r >= b && b > 1 {
 						// magenta
 						cidx = 6
+						if r == 2 && b == 2 {
+							chi = 11
+							cidx = 6 + 512
+							cbidx = 6
+						}
 					}
 				}
 			}
@@ -169,18 +179,40 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 	if r >= 2 && g >= 2 && b < 2 {
 		// yellow
 		cidx = 4
+		if r+g > 4 {
+			cidx = 4 + 512
+		}
+	}
+	if r == 1 && g >= 2 && b == 1 {
+		chi = 11
+		// green
+		cidx = 3 + 512
+		cbidx = 8
+	}
+	if r == 1 && g >= 2 && b == 0 {
+		// yellow
+		chi = 11
+		cidx = 4
+		cbidx = 3 + 512
 	}
 	if r == 3 && g == 3 && b == 2 {
+		chi = 11
 		// white
-		cidx = 8 + 512
+		cbidx = 8 + 512
+		cidx = 4 + 512
 	}
 	if r == 2 && g == 2 && b == 1 {
+		chi = 11
+		cbidx = 4 + 512
 		// white
 		cidx = 8
 	}
 	if r < 2 && g >= 2 && b >= 2 {
 		// cyan
 		cidx = 7
+		if g+b > 4 {
+			cidx += 512
+		}
 	}
 	if r >= 2 && g < 2 && b >= 2 {
 		// magenta
@@ -192,7 +224,7 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 	}
 	if r == 3 && g == 1 && b == 1 {
 		// white
-		cbidx = 2
+		cbidx = 2 + 512
 		cidx = 8
 		chi = 11
 	}
@@ -202,17 +234,34 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 	}
 	if r < 2 && g == 3 && b < 2 {
 		// green
-		cidx = 3
+		cidx = 3 + 512
 	}
-	if r == 1 && g == 1 && b == 3 {
+	if r == 0 && g == 3 && b == 1 {
+		chi = 11
+		cidx = 7
+		// green
+		cbidx = 3 + 512
+	}
+
+	if r == 0 && g == 1 && b >= 2 {
+		chi = 11
 		// blue
-		cidx = 5
+		cbidx = 5 + 512
+		// cyan
+		cidx = 7
+	}
+	if r == 1 && g == 0 && b >= 2 {
+		chi = 11
+		// blue
+		cbidx = 5 + 512
+		// magenta
+		cidx = 6
 	}
 	if r == 2 && g == 1 && b == 0 {
 		chi = 11
 		// yellow
 		cidx = 4
-		cbidx = 2
+		cbidx = 2 + 512
 	}
 	if r == 1 && g == 1 && b == 0 {
 		chi = 11
@@ -223,8 +272,14 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 	if r == 3 && g == 3 && b == 2 {
 		chi = 11
 		// yellow
-		cidx = 8
-		cbidx = 4
+		cidx = 8 + 512
+		cbidx = 4 + 512
+	}
+	if r == 2 && g == 2 && b == 0 {
+		chi = 10
+		// yellow
+		cidx = 4 + 512
+		//cbidx = 4 + 512
 	}
 	if r == 1 && g == 0 && b == 1 {
 		chi = 11
@@ -236,7 +291,7 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		chi = 11
 		// magenta
 		cidx = 6
-		cbidx = 2
+		cbidx = 2 + 512
 	}
 	if r == 1 && g == 0 && b == 2 {
 		chi = 11
@@ -248,6 +303,19 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		chi = 11
 		// magenta
 		cidx = 8
+		cbidx = 6 + 512
+	}
+	if r == 3 && g == 2 && b == 1 {
+		chi = 11
+		// yellow
+		cidx = 4 + 512
+		// red
+		cbidx = 2 + 512
+	}
+	if r == 2 && g == 0 && b == 2 {
+		chi = 11
+		// magenta
+		cidx = 6 + 512
 		cbidx = 6
 	}
 	if r == 0 && g == 1 && b == 1 {
@@ -256,10 +324,16 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		cidx = 1
 		cbidx = 7
 	}
+	if r == 0 && g == 2 && b == 2 {
+		chi = 10
+		// cyan
+		cidx = 7 + 512
+
+	}
 	if r == 0 && g == 2 && b == 1 {
 		chi = 11
 		// cyan
-		cidx = 7
+		cidx = 7 + 512
 		cbidx = 3
 	}
 	if r == 0 && g == 1 && b == 2 {
@@ -272,7 +346,7 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		chi = 11
 		// cyan
 		cidx = 8
-		cbidx = 7
+		cbidx = 7 + 512
 	}
 	if r == 1 && g == 1 && b == 1 {
 		chi = 11
@@ -305,7 +379,96 @@ func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx u
 		cbidx = 5
 	}
 	if r == 3 && g == 0 && b == 3 {
+		// magenta
 		cidx = 6 + 512
+	}
+	if r == 3 && g == 2 && b == 0 {
+		chi = 11
+		cbidx = 2 + 512
+		cidx = 4 + 512
+	}
+	if r == 2 && g == 3 && b == 0 {
+		chi = 11
+		// green
+		cbidx = 3 + 512
+		// yellow
+		cidx = 4 + 512
+	}
+	if r == 0 && g == 2 && b == 3 {
+		chi = 11
+		// cyan
+		cidx = 7 + 512
+		cbidx = 5 + 512
+	}
+	if r == 0 && g == 3 && b == 2 {
+		chi = 11
+		// cyan
+		cidx = 7 + 512
+		// green
+		cbidx = 3 + 512
+	}
+	if r == 1 && g == 1 && b == 3 {
+		chi = 11
+		// white
+		cbidx = 8
+		// blue
+		cidx = 5 + 512
+	}
+	if r == 1 && g == 2 && b == 0 {
+		chi = 11
+		// yellow
+		cbidx = 4
+		// green
+		cidx = 3 + 512
+	}
+	if r == 1 && g == 2 && b == 3 {
+		chi = 11
+		// cyan
+		cidx = 7 + 512
+		// white
+		cbidx = 8 + 512
+	}
+	if r == 1 && g == 3 && b == 0 {
+		chi = 11
+		// yellow
+		cbidx = 4 + 512
+		// green
+		cidx = 3 + 512
+	}
+	if r == 1 && g == 3 && b == 3 {
+		chi = 11
+		// cyan
+		cidx = 7 + 512
+		// white
+		cbidx = 8 + 512
+	}
+	if r == 2 && g == 2 && b == 0 {
+		chi = 11
+		// yellow
+		cbidx = 4 + 512
+		// yellow
+		cidx = 4
+	}
+	if r == 2 && g == 3 && b == 1 {
+		chi = 11
+		// magenta
+		cbidx = 6 + 512
+		// white
+		cidx = 8 + 512
+	}
+	if r == 2 && g == 3 && b == 3 {
+		chi = 11
+		// cyan
+		cbidx = 7 + 512
+		// white
+		cidx = 8 + 512
+	}
+	if r == 3 && g == 0 && b == 2 {
+		chi = 11
+		// magenta
+		cidx = 6 + 512
+		// red
+		cbidx = 2 + 512
 	}
 	return
 }
@@ -334,16 +497,27 @@ func imgtype(reader io.Reader, imageType string) {
 	w, h := termbox.Size()
 	imgText := resize.Resize(uint(w), uint(h), img, resize.Lanczos3)
 	termbox.SetOutputMode(termbox.Output256)
-	const mojiretsu = "0123456789 ░#" //{' ', '░', '▒', '▓', '█'}
+	const mojiretsu = "0123456789 ░▒#" //{' ', '░', '▒', '▓', '█'}
 	nihongoRune := []rune(mojiretsu)
 	termbox.SetCell(0, 0, nihongoRune[1], termbox.ColorRed, termbox.ColorBlue)
 	for i := 0; i < h; i++ {
 		for j := 0; j < w; j++ {
 			r, g, b, _ := imgText.At(j, i).RGBA()
-
-			r = uint32(r * 3 / 65535)
-			g = uint32(g * 3 / 65535)
-			b = uint32(b * 3 / 65535)
+			if r > 0 {
+				r = uint32((r - 1) * 4 / 65535)
+			} else {
+				r = 0
+			}
+			if g > 0 {
+				g = uint32((g - 1) * 4 / 65535)
+			} else {
+				g = 0
+			}
+			if b > 0 {
+				b = uint32((b - 1) * 4 / 65535)
+			} else {
+				b = 0
+			}
 
 			chi, cidx, cbidx := getCellInfo(r, g, b)
 			termbox.SetCell(j, i, nihongoRune[chi], termbox.Attribute(cbidx), termbox.Attribute(cidx))
