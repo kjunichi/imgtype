@@ -58,418 +58,225 @@ func getStream(imagePath string) {
 	}
 	imgtype(reader, imageType)
 }
-
-func getCellInfo(r uint32, g uint32, b uint32) (chi uint16, cidx uint16, cbidx uint16) {
-	chi = 10
-	cidx = 0
-	cbidx = 0
-	if r == g && g == b && r > 0 {
-		// white
-		cidx = 8
-		if r > 2 {
-			cidx = cidx + 512
-		}
+func rgb2hsv(r, g, b uint32) (h, s, v int32) {
+	max := r
+	min := r
+	if max < g {
+		max = g
+	}
+	if max < b {
+		max = b
+	}
+	if min > g {
+		min = g
+	}
+	if min > b {
+		min = b
+	}
+	v = int32(max)
+	if max == 0 {
+		s = 0
 	} else {
-		if r > 0 {
-			// r > 0
-			if g == 0 && b == 0 {
-				//red
-				cidx = 2
-				if r > 1 {
-					// light red
-					cidx = cidx + 512
-				}
-			}
-			if g > 0 {
-				// r>0,g>0
-				if b == 0 {
-					// r>0,g>0,b=0
-					if r >= g && g > 1 {
-						// yellow
-						cidx = 4
-						if g > 1 {
-							cidx = cidx + 512
-						}
-					} else {
-						// g=1
-						if r > 2 {
-							// red
-							cidx = 2
-							if r > 2 {
-								cidx = cidx + 512
-							}
-						}
-					}
-				} else {
-					// r>0,b>0
-					if b > g && r >= b {
-						// magenta
-						cidx = 6
-						if r+g > 4 && g == 0 {
-							chi = 11
-							cbidx = 6 + 512
-							cidx = 8
-						}
-					} else {
-						if r >= g && g > 2 {
-							// yellow
-							cidx = 4
-						} else {
-							cidx = 8
-						}
-					}
-				}
+		s = int32((3 * (max - min)) / max)
+	}
+	if max == min {
+		h = -1
+		//fmt.Println("rgb2hsv = :", h, s, v)
+		return
+	}
+	if max == r {
+		h = int32((60.0 * (int32(g) - int32(b))) / int32(max-min))
+	} else if max == g {
+		h = int32((60.0 * (int32(b) - int32(r)) / int32(max-min)) + 120.0)
+	} else {
+		h = int32((60.0 * (int32(r) - int32(g)) / int32(max-min)) + 240.0)
+	}
 
-			} else {
-				// g=0
-				if b > 0 {
-					if r >= b && b > 1 {
-						// magenta
-						cidx = 6
-						if r == 2 && b == 2 {
-							chi = 11
-							cidx = 6 + 512
-							cbidx = 6
-						}
-					}
-				}
-			}
-		} else {
-			// r = 0
-			if g > 0 {
-				if b == 0 {
-					//green
-					cidx = 3
-					if g > 1 {
-						cidx = cidx + 512
-					}
-				} else {
-					// r=0,g>0,b>0
-					if g < b {
-						//blue
-						cidx = 5
-						if b > 2 {
-							cidx = cidx + 512
-						}
+	if h < 0 {
+		h += 360
+	}
 
-					} else {
-						// cyan
-						cidx = 7
-						if b > 1 {
-							cidx = cidx + 512
-						}
-					}
-				}
-			} else {
-				// r =0,g = 0
-				if b > 0 {
-					// blue
-					cidx = 5
-					if b > 1 {
-						cidx = cidx + 512
-					}
-				} else {
-					// r=0,g=0,b=0
-					// black
-					cidx = 1
-				}
-			}
-		}
-	}
-	if r >= 2 && g >= 2 && b < 2 {
-		// yellow
-		cidx = 4
-		if r+g > 4 {
-			cidx = 4 + 512
-		}
-	}
-	if r == 1 && g >= 2 && b == 1 {
-		chi = 11
-		// green
-		cidx = 3 + 512
-		cbidx = 8
-	}
-	if r == 1 && g >= 2 && b == 0 {
-		// yellow
-		chi = 11
-		cidx = 4
-		cbidx = 3 + 512
-	}
-	if r == 3 && g == 3 && b == 2 {
-		chi = 11
-		// white
-		cbidx = 8 + 512
-		cidx = 4 + 512
-	}
-	if r == 2 && g == 2 && b == 1 {
-		chi = 11
-		cbidx = 4 + 512
-		// white
-		cidx = 8
-	}
-	if r < 2 && g >= 2 && b >= 2 {
-		// cyan
-		cidx = 7
-		if g+b > 4 {
-			cidx += 512
-		}
-	}
-	if r >= 2 && g < 2 && b >= 2 {
-		// magenta
-		cidx = 6
-	}
-	if r == 3 && g < 2 && b < 2 {
+	return
+}
+
+func getCellInfo(r, g, b uint32) (chi, cidx, cbidx int32) {
+	//fmt.Printf("in : r,g,b = %d,%d,%d\n",r,g,b)
+	chi = 10
+	cbidx = 0
+	h, s, v := rgb2hsv(r, g, b)
+	//fmt.Printf("hsv : %d,%d,%d\n",h,s,v)
+	if h >= 330 || (h < 30 && h >= 0) {
 		// red
 		cidx = 2
+		if s > 2 {
+			if h > 0 {
+				chi = 11
+				cbidx = 4
+			}
+			if h >= 330 {
+				chi = 11
+				cbidx = 6
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cbidx = 8
+				cidx = 2
+			}
+		}
 	}
-	if r == 3 && g == 1 && b == 1 {
-		// white
-		cbidx = 2 + 512
-		cidx = 8
-		chi = 11
-	}
-	if r == 3 && g < 1 && b < 1 {
-		// red
-		cidx = 2 + 512
-	}
-	if r < 2 && g == 3 && b < 2 {
-		// green
-		cidx = 3 + 512
-	}
-	if r == 0 && g == 3 && b == 1 {
-		chi = 11
-		cidx = 7
-		// green
-		cbidx = 3 + 512
-	}
-
-	if r == 0 && g == 1 && b >= 2 {
-		chi = 11
-		// blue
-		cbidx = 5 + 512
-		// cyan
-		cidx = 7
-	}
-	if r == 1 && g == 0 && b >= 2 {
-		chi = 11
-		// blue
-		cbidx = 5 + 512
-		// magenta
-		cidx = 6
-	}
-	if r == 2 && g == 1 && b == 0 {
-		chi = 11
+	if h >= 30 && h < 90 {
 		// yellow
 		cidx = 4
-		cbidx = 2 + 512
+		if s > 2 {
+			if h < 60 {
+				chi = 11
+				cbidx = 2
+			}
+			if h > 60 {
+				chi = 11
+				cbidx = 3
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cidx = 4
+				cbidx = 8
+			}
+		}
 	}
-	if r == 1 && g == 1 && b == 0 {
-		chi = 11
-		// yellow
-		cidx = 1
-		cbidx = 4
+	if h >= 90 && h < 150 {
+		// green
+		cidx = 3
+		if s > 2 {
+			if h < 120 {
+				chi = 11
+				cbidx = 4
+			}
+			if h > 120 {
+				chi = 11
+				cbidx = 7
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cbidx = 8
+				cidx = 3
+			}
+		}
 	}
-	if r == 3 && g == 3 && b == 2 {
-		chi = 11
-		// yellow
-		cidx = 8 + 512
-		cbidx = 4 + 512
-	}
-	if r == 2 && g == 2 && b == 0 {
-		chi = 10
-		// yellow
-		cidx = 4 + 512
-		//cbidx = 4 + 512
-	}
-	if r == 1 && g == 0 && b == 1 {
-		chi = 11
-		// magenta
-		cidx = 1
-		cbidx = 6
-	}
-	if r == 2 && g == 0 && b == 1 {
-		chi = 11
-		// magenta
-		cidx = 6
-		cbidx = 2 + 512
-	}
-	if r == 1 && g == 0 && b == 2 {
-		chi = 11
-		// magenta
-		cidx = 6
-		cbidx = 5
-	}
-	if r == 3 && g == 2 && b == 3 {
-		chi = 11
-		// magenta
-		cidx = 8
-		cbidx = 6 + 512
-	}
-	if r == 3 && g == 2 && b == 1 {
-		chi = 11
-		// yellow
-		cidx = 4 + 512
-		// red
-		cbidx = 2 + 512
-	}
-	if r == 2 && g == 0 && b == 2 {
-		chi = 11
-		// magenta
-		cidx = 6 + 512
-		cbidx = 6
-	}
-	if r == 0 && g == 1 && b == 1 {
-		chi = 11
-		// cyan
-		cidx = 1
-		cbidx = 7
-	}
-	if r == 0 && g == 2 && b == 2 {
-		chi = 10
-		// cyan
-		cidx = 7 + 512
-
-	}
-	if r == 0 && g == 2 && b == 1 {
-		chi = 11
-		// cyan
-		cidx = 7 + 512
-		cbidx = 3
-	}
-	if r == 0 && g == 1 && b == 2 {
-		chi = 11
+	if h >= 150 && h <= 210 {
 		// cyan
 		cidx = 7
-		cbidx = 5
+		if s > 2 {
+			if h < 180 {
+				chi = 11
+				cbidx = 3
+			}
+			if h > 180 {
+				chi = 11
+				cbidx = 5
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cbidx = 8
+				cidx = 7
+			}
+		}
 	}
-	if r == 2 && g == 3 && b == 3 {
-		chi = 11
-		// cyan
-		cidx = 8
-		cbidx = 7 + 512
-	}
-	if r == 1 && g == 1 && b == 1 {
-		chi = 11
-		// white
-		cidx = 1
-		cbidx = 8
-	}
-	if r == 2 && g == 2 && b == 2 {
-		chi = 11
-		// white
-		cidx = 8
-		cbidx = 8 + 512
-	}
-	if r == 1 && g == 0 && b == 0 {
-		chi = 11
-		// red
-		cidx = 1
-		cbidx = 2
-	}
-	if r == 0 && g == 1 && b == 0 {
-		chi = 11
-		// green
-		cidx = 1
-		cbidx = 3
-	}
-	if r == 0 && g == 0 && b == 1 {
-		chi = 11
+	if h > 210 && h < 270 {
 		// blue
-		cidx = 1
-		cbidx = 5
+		cidx = 5
+		if s > 2 {
+			if h < 240 {
+				chi = 11
+				cbidx = 7
+			}
+			if h > 240 {
+				chi = 11
+				cbidx = 6
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cbidx = 8
+				cidx = 5
+			}
+		}
 	}
-	if r == 3 && g == 0 && b == 3 {
+	if h >= 270 && h < 330 {
 		// magenta
-		cidx = 6 + 512
+		cidx = 6
+		if s > 2 {
+			if h < 300 {
+				chi = 11
+				cbidx = 5
+			}
+			if h > 300 {
+				chi = 11
+				cbidx = 2
+			}
+		} else {
+			chi = 11
+			if s == 2 {
+				cbidx = 8
+			} else {
+				chi = 1
+				cbidx = 8
+				cidx = 6
+			}
+		}
 	}
-	if r == 3 && g == 2 && b == 0 {
+	if h < 0 {
+		chi = 10
+		if v == 0 {
+			cidx = 1
+		}
+		if v == 1 {
+			chi = 0
+			cidx = 8
+			cbidx = 8
+		}
+		if v == 2 {
+			chi = 1
+			cbidx = 8 + 512
+			cidx = 8
+		}
+		if v == 3 {
+			chi = 0
+			cidx = 0
+			cbidx = 8 + 512
+		}
+
+		return
+	}
+	if v > 2 {
+		cidx += 512
+		if cbidx > 0 {
+			cbidx += 512
+		}
+	}
+	if v == 2 && s == 3 && chi == 10 {
 		chi = 11
-		cbidx = 2 + 512
-		cidx = 4 + 512
+		cbidx = cidx + 512
 	}
-	if r == 2 && g == 3 && b == 0 {
-		chi = 11
-		// green
-		cbidx = 3 + 512
-		// yellow
-		cidx = 4 + 512
-	}
-	if r == 0 && g == 2 && b == 3 {
-		chi = 11
-		// cyan
-		cidx = 7 + 512
-		cbidx = 5 + 512
-	}
-	if r == 0 && g == 3 && b == 2 {
-		chi = 11
-		// cyan
-		cidx = 7 + 512
-		// green
-		cbidx = 3 + 512
-	}
-	if r == 1 && g == 1 && b == 3 {
-		chi = 11
-		// white
-		cbidx = 8
-		// blue
-		cidx = 5 + 512
-	}
-	if r == 1 && g == 2 && b == 0 {
-		chi = 11
-		// yellow
-		cbidx = 4
-		// green
-		cidx = 3 + 512
-	}
-	if r == 1 && g == 2 && b == 3 {
-		chi = 11
-		// cyan
-		cidx = 7 + 512
-		// white
-		cbidx = 8 + 512
-	}
-	if r == 1 && g == 3 && b == 0 {
-		chi = 11
-		// yellow
-		cbidx = 4 + 512
-		// green
-		cidx = 3 + 512
-	}
-	if r == 1 && g == 3 && b == 3 {
-		chi = 11
-		// cyan
-		cidx = 7 + 512
-		// white
-		cbidx = 8 + 512
-	}
-	if r == 2 && g == 2 && b == 0 {
-		chi = 11
-		// yellow
-		cbidx = 4 + 512
-		// yellow
-		cidx = 4
-	}
-	if r == 2 && g == 3 && b == 1 {
-		chi = 11
-		// magenta
-		cbidx = 6 + 512
-		// white
-		cidx = 8 + 512
-	}
-	if r == 2 && g == 3 && b == 3 {
-		chi = 11
-		// cyan
-		cbidx = 7 + 512
-		// white
-		cidx = 8 + 512
-	}
-	if r == 3 && g == 0 && b == 2 {
-		chi = 11
-		// magenta
-		cidx = 6 + 512
-		// red
-		cbidx = 2 + 512
-	}
+	//fmt.Printf("out : chi, cidx, cbidx = %d,%d,%d\n",chi,cidx,cbidx)
 	return
 }
 
@@ -496,8 +303,9 @@ func imgtype(reader io.Reader, imageType string) {
 	defer termbox.Close()
 	w, h := termbox.Size()
 	imgText := resize.Resize(uint(w), uint(h), img, resize.Lanczos3)
+	//imgText := resize.Resize(uint(w), uint(h), img, resize.Bilinear)
 	termbox.SetOutputMode(termbox.Output256)
-	const mojiretsu = "0123456789 ░▒#" //{' ', '░', '▒', '▓', '█'}
+	const mojiretsu = "█▓23456789 ░▒#" //{' ', '░', '▒', '▓', '█'}
 	nihongoRune := []rune(mojiretsu)
 	termbox.SetCell(0, 0, nihongoRune[1], termbox.ColorRed, termbox.ColorBlue)
 	for i := 0; i < h; i++ {
@@ -520,6 +328,7 @@ func imgtype(reader io.Reader, imageType string) {
 			}
 
 			chi, cidx, cbidx := getCellInfo(r, g, b)
+			//fmt.Println(r, g, b, chi, cidx, cbidx)
 			termbox.SetCell(j, i, nihongoRune[chi], termbox.Attribute(cbidx), termbox.Attribute(cidx))
 		}
 	}
